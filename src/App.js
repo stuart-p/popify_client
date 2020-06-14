@@ -4,7 +4,7 @@ import { Router } from "@reach/router";
 import "./App.css";
 import LandingPage from "./components/LandingPage";
 import Header from "./components/Header";
-import SearchPage from "./components/SearchPage";
+import SearchPage from "./components/Search/SearchPage";
 
 function App() {
   return (

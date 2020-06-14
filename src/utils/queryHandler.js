@@ -1,5 +1,3 @@
-import { auth } from "../stores/auth";
-
 export const detectTokenQueries = (path) => {
   const accessRegex = /access_token=([^&]*)/;
   const refreshRegex = /refresh_token=([^&]*)/;

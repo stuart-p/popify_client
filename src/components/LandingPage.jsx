@@ -1,27 +1,22 @@
-import { useLocation, navigate, Link } from "@reach/router";
+import { useLocation, Link } from "@reach/router";
 import React from "react";
-import { detectTokenQueries } from "../utils/queryHandler";
 import { Observer } from "mobx-react";
-import {
-  auth,
-  setAccessToken,
-  setRefreshToken,
-  setLoginStatus,
-  logout,
-} from "../stores/auth.js";
+import { auth } from "../stores/auth.js";
+import { handleLoginStatus } from "../utils/loginHandler";
 
 const LandingPage = () => {
   const location = useLocation();
-  const authData = detectTokenQueries(location.search);
-  if (authData.containsAuth) {
-    setAccessToken(authData.access_token);
-    setRefreshToken(authData.refresh_token);
-    setLoginStatus(true);
-    navigate("/");
-  }
+  // const authData = detectTokenQueries(location.search);
+  // if (authData.containsAuth) {
+  //   setAccessToken(authData.access_token);
+  //   setRefreshToken(authData.refresh_token);
+  //   setLoginStatus(true);
+  //   navigate("/");
+  // }
+  handleLoginStatus(location);
   return (
     <div>
-      <h1>Popify</h1>
+      <h2>A Spotify Search API</h2>
       <Observer>
         {() =>
           auth.loggedIn && (

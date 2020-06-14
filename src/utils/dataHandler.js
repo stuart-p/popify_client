@@ -1,3 +1,5 @@
+import stockImg from "../images/logoPink.png";
+
 export const findResultsTitle = (results) => {
   if (typeof results !== "object") return "";
 
@@ -12,9 +14,21 @@ export const findResultsTitle = (results) => {
   return `Showing ${capitalizedTitle} for '${searchField}'`;
 };
 
+export const findResultsType = (results) => {
+  if (typeof results !== "object") return "";
+
+  const keys = Object.keys(results);
+  if (keys.length === 0) return "";
+
+  return keys[0];
+};
+
 export const determineNextAndPreviousSetSearchParams = (results) => {
   const nextSearchParams = {
-    isAvailable: false,
+    isPrevAvailable: false,
+    isNextAvailable: false,
+    prev: {},
+    next: {},
   };
   const queryRegex = /query=([^&]*)/;
   const typeQuery = /type=([^&]*)/;
@@ -23,17 +37,44 @@ export const determineNextAndPreviousSetSearchParams = (results) => {
 
   if (results === null) return nextSearchParams;
 
-  if (
-    results.match(queryRegex) &&
-    results.match(typeQuery) &&
-    results.match(offsetQuery) &&
-    results.match(limitQuery)
-  ) {
-    nextSearchParams.query = results.match(queryRegex)[1];
-    nextSearchParams.type = results.match(typeQuery)[1];
-    nextSearchParams.offset = parseInt(results.match(offsetQuery)[1]);
-    nextSearchParams.limit = parseInt(results.match(limitQuery)[1]);
-    nextSearchParams.isAvailable = true;
+  const keys = Object.keys(results);
+  if (keys.length === 0) return nextSearchParams;
+
+  if (results[keys[0]].prev) {
+    if (
+      results[keys[0]].prev.match(queryRegex) &&
+      results[keys[0]].prev.match(typeQuery) &&
+      results[keys[0]].prev.match(offsetQuery) &&
+      results[keys[0]].prev.match(limitQuery)
+    ) {
+      nextSearchParams.prev.query = results[keys[0]].prev.match(queryRegex)[1];
+      nextSearchParams.prev.type = results[keys[0]].prev.match(typeQuery)[1];
+      nextSearchParams.prev.offset = parseInt(
+        results[keys[0]].prev.match(offsetQuery)[1]
+      );
+      nextSearchParams.prev.limit = parseInt(
+        results[keys[0]].prev.match(limitQuery)[1]
+      );
+      nextSearchParams.isPrevAvailable = true;
+    }
+  }
+  if (results[keys[0]].next) {
+    if (
+      results[keys[0]].next.match(queryRegex) &&
+      results[keys[0]].next.match(typeQuery) &&
+      results[keys[0]].next.match(offsetQuery) &&
+      results[keys[0]].next.match(limitQuery)
+    ) {
+      nextSearchParams.next.query = results[keys[0]].next.match(queryRegex)[1];
+      nextSearchParams.next.type = results[keys[0]].next.match(typeQuery)[1];
+      nextSearchParams.next.offset = parseInt(
+        results[keys[0]].next.match(offsetQuery)[1]
+      );
+      nextSearchParams.next.limit = parseInt(
+        results[keys[0]].next.match(limitQuery)[1]
+      );
+      nextSearchParams.isNextAvailable = true;
+    }
   }
 
   return nextSearchParams;
@@ -50,4 +91,13 @@ export const gatherResultItemsArray = (results) => {
   });
 
   return itemArray;
+};
+
+export const fetchThumbnailImgUrl = (imageArray) => {
+  let imageURL = stockImg;
+
+  if (imageArray.length > 1) {
+    imageURL = imageArray[1].url;
+  }
+  return imageURL;
 };

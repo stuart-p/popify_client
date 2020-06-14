@@ -1,6 +1,7 @@
 import React from "react";
 import { Observer } from "mobx-react";
 import { auth, logOut } from "../stores/auth";
+import { Link } from "@reach/router";
 
 const logOutButton = () => {
   logOut();
@@ -20,6 +21,21 @@ const Header = () => {
           )
         }
       </Observer>
+      <ul>
+        <li>
+          <Link to="/">
+            <button>Home</button>
+          </Link>
+        </li>
+        <li>
+          <Link to="/search">
+            <Observer>
+              {() => <button disabled={!auth.loggedIn}>Search</button>}
+            </Observer>
+          </Link>
+        </li>
+      </ul>
+      <h1>POPIFY</h1>
     </div>
   );
 };
