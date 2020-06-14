@@ -1,7 +1,10 @@
 import React from "react";
 import { Observer } from "mobx-react";
-import { auth, logOut } from "../stores/auth";
+import { auth, logOut } from "../../stores/auth";
 import { Link } from "@reach/router";
+import { JumboHeader } from "../../styles/containers.style";
+import { BannerHeading } from "../../styles/text.style";
+import { NavLinks, StyledButton } from "../../styles/ui.style";
 
 const logOutButton = () => {
   logOut();
@@ -9,19 +12,21 @@ const logOutButton = () => {
 
 const Header = () => {
   return (
-    <div>
+    <JumboHeader>
       <Observer>
         {() =>
           auth.loggedIn ? (
             <button onClick={logOutButton}>log out</button>
           ) : (
-            <a href="http://localhost:8080/auth/login">
-              <button>login with Spotify account</button>
-            </a>
+            <StyledButton loginButton>
+              <a href="http://localhost:8080/auth/login">
+                Login with Spotify account
+              </a>
+            </StyledButton>
           )
         }
       </Observer>
-      <ul>
+      <NavLinks>
         <li>
           <Link to="/">
             <button>Home</button>
@@ -34,9 +39,9 @@ const Header = () => {
             </Observer>
           </Link>
         </li>
-      </ul>
-      <h1>POPIFY</h1>
-    </div>
+      </NavLinks>
+      <BannerHeading>POPIFY</BannerHeading>
+    </JumboHeader>
   );
 };
 

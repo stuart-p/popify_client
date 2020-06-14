@@ -1,9 +1,8 @@
 import React from "react";
 import { Router } from "@reach/router";
 
-import "./App.css";
-import LandingPage from "./components/LandingPage";
-import Header from "./components/Header";
+import LandingPage from "./components/LandingPage/LandingPage";
+import Header from "./components/Header/Header";
 import SearchPage from "./components/Search/SearchPage";
 
 function App() {
