@@ -67,6 +67,7 @@ export const StyledButton = styled.button`
   }
   a {
     text-decoration: none;
+    color: ${theme.a};
 
     &:visited {
       color: ${theme.a};
