@@ -21,7 +21,7 @@ const Header = () => {
             </StyledButton>
           ) : (
             <StyledButton loginButton>
-              <a href="http://localhost:8080/auth/login">
+              <a href={process.env.REACT_APP_AUTH_SERVER}>
                 Login with Spotify account
               </a>
             </StyledButton>
