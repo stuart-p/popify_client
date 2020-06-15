@@ -16,7 +16,9 @@ const Header = () => {
       <Observer>
         {() =>
           auth.loggedIn ? (
-            <button onClick={logOutButton}>log out</button>
+            <StyledButton loginButton onClick={logOutButton}>
+              log out
+            </StyledButton>
           ) : (
             <StyledButton loginButton>
               <a href="http://localhost:8080/auth/login">

@@ -9,13 +9,15 @@ import {
   ParaHeading,
 } from "../../styles/text.style.js";
 
+import { SegmentedControl } from "segmented-control";
+
 const LandingPage = () => {
   const location = useLocation();
   handleLoginStatus(location);
 
   return (
     <main>
-      <SectionHeading>A Spotify Search API</SectionHeading>
+      <SectionHeading>A Spotify Search Portal</SectionHeading>
       <ParaHeading>What is this site?</ParaHeading>
       <SectionPara>
         This is a portfolio site created by Stuart Palmer in June 2020, as a

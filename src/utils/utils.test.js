@@ -115,13 +115,13 @@ describe("utility function tests", () => {
       it("when passed an object with a prev query field, returns an object with a query key with the populated query value", () => {
         const input = {
           artists: {
-            prev:
+            previous:
               "https://api.spotify.com/v1/search?query=dora&type=track&offset=20&limit=20",
           },
         };
 
         const output = determineNextAndPreviousSetSearchParams(input);
-        expect(output.prev.query).toBe("dora");
+        expect(output.previous.query).toBe("dora");
       });
       it("when passed an object with a next query field, returns an object with a query key with the populated query value", () => {
         const input = {
@@ -139,12 +139,12 @@ describe("utility function tests", () => {
           artists: {
             next:
               "https://api.spotify.com/v1/search?query=dora&type=track&offset=20&limit=20",
-            prev:
+            previous:
               "https://api.spotify.com/v1/search?query=dora&type=artist&offset=20&limit=20",
           },
         };
         const output = determineNextAndPreviousSetSearchParams(input);
-        expect(output.prev.type).toBe("artist");
+        expect(output.previous.type).toBe("artist");
         expect(output.next.type).toBe("track");
       });
       it("when passed an object with an offset field, returns an object with an offset field with offset value", () => {
@@ -152,12 +152,12 @@ describe("utility function tests", () => {
           artists: {
             next:
               "https://api.spotify.com/v1/search?query=dora&type=track&offset=10&limit=15",
-            prev:
+            previous:
               "https://api.spotify.com/v1/search?query=dora&type=artist&offset=20&limit=19",
           },
         };
         const output = determineNextAndPreviousSetSearchParams(input);
-        expect(output.prev.offset).toBe(20);
+        expect(output.previous.offset).toBe(20);
         expect(output.next.offset).toBe(10);
       });
       it("when passed a string with a limit field, retusn an object with a limit field with limit value", () => {
@@ -165,12 +165,12 @@ describe("utility function tests", () => {
           artists: {
             next:
               "https://api.spotify.com/v1/search?query=dora&type=track&offset=10&limit=15",
-            prev:
+            previous:
               "https://api.spotify.com/v1/search?query=dora&type=artist&offset=20&limit=19",
           },
         };
         const output = determineNextAndPreviousSetSearchParams(input);
-        expect(output.prev.limit).toBe(19);
+        expect(output.previous.limit).toBe(19);
         expect(output.next.limit).toBe(15);
       });
       it("when passed a string with all valid search parameters, isAvailable is set to true", () => {
@@ -178,7 +178,7 @@ describe("utility function tests", () => {
           artists: {
             next:
               "https://api.spotify.com/v1/search?query=dora&type=track&offset=10&limit=15",
-            prev:
+            previous:
               "https://api.spotify.com/v1/search?query=dora&type=artist&offset=20&limit=19",
           },
         };

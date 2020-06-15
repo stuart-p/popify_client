@@ -7,7 +7,9 @@ export const BannerHeading = styled.h1`
   font-weight: 800;
   z-index: 5;
   margin: 3rem 5rem;
-
+  @media (max-width: 600px) {
+    margin: 2rem;
+  }
   font-size: calc(2rem + 7vw);
 `;
 
@@ -28,6 +30,11 @@ export const ParaHeading = styled.h3`
 `;
 export const SectionPara = styled.p`
   font-family: "Montserrat", sans-serif;
+
+  a {
+    color: ${theme.c};
+    font-weight: 800;
+  }
 
   text-align: left;
   margin: 0.3rem 0.3rem 2.5rem 0.3rem;

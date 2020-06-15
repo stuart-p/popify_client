@@ -13,7 +13,12 @@ import ArtistCard from "./ArtistCard";
 import AlbumCard from "./AlbumCard";
 import TrackCard from "./TrackCard";
 import PlaylistCard from "./PlaylistCard";
-import SearchTypeSelector from "./SearchTypeSelector";
+import { SectionHeading } from "../../styles/text.style";
+import SegmentedControl from "segmented-control/dist/SegmentedControl";
+import { StyledButton, SearchForm, ResultsList } from "../../styles/ui.style";
+import { SearchFooter } from "../../styles/containers.style";
+import { Observer } from "mobx-react";
+import nextArrow from "../../images/next.png";
 
 const s = new Spotify();
 
@@ -36,14 +41,13 @@ const SearchPage = () => {
   };
 
   const onTypeChange = (target) => {
-    setSearchType(target.value);
+    setSearchType(target);
   };
 
   const onSearchClick = (event) => {
     event.preventDefault();
     s.setAccessToken(auth.access_token);
     return s.search(searchInput, [searchType]).then((data) => {
-      console.log(data);
       setSearchInput("");
       setSearchResults([]);
       setResultsTitle(findResultsTitle(data));
@@ -63,15 +67,19 @@ const SearchPage = () => {
     };
 
     s.setAccessToken(auth.access_token);
-    return s.search(queryData.query, [queryData.type], options).then((data) => {
-      console.log(data);
-      setSearchInput("");
-      setSearchResults([]);
-      setResultsTitle(findResultsTitle(data));
-      setResultsType(findResultsType(data));
-      setSearchResults(gatherResultItemsArray(data));
-      setOffsetResultsQuery(determineNextAndPreviousSetSearchParams(data));
-    });
+    return s
+      .search(queryData.query, [queryData.type], options)
+      .then((data) => {
+        setSearchInput("");
+        setSearchResults([]);
+        setResultsTitle(findResultsTitle(data));
+        setResultsType(findResultsType(data));
+        setSearchResults(gatherResultItemsArray(data));
+        setOffsetResultsQuery(determineNextAndPreviousSetSearchParams(data));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   handleLoginStatus(location);
@@ -81,75 +89,108 @@ const SearchPage = () => {
   }, [searchResults]);
 
   return auth.loggedIn ? (
-    <>
-      <main>
-        <h2>Search For Music Info</h2>
-        <SearchTypeSelector
-          onTypeChange={onTypeChange}
-          searchType={searchType}
-        />
-        <form onSubmit={onSearchClick}>
-          <input
-            type="text"
-            value={searchInput}
-            aria-label="Search for song data"
-            placeholder="Search for something..."
-            onChange={(event) => onInputChange(event.target)}
-          ></input>
-          <button onClick={onSearchClick}>search</button>
-        </form>
-        <section>
-          <h2>{resultsTitle}</h2>
-          <ul>
-            {searchResults.map((item) => {
-              switch (resultsType) {
-                case "artists":
-                  return (
-                    <ArtistCard
-                      key={item.id}
-                      name={item.name}
-                      img={item.images}
-                    />
-                  );
-                case "albums":
-                  return (
-                    <AlbumCard
-                      key={item.id}
-                      name={item.name}
-                      img={item.images}
-                      artist={item.artists[0].name}
-                    />
-                  );
-                case "tracks":
-                  return (
-                    <TrackCard
-                      key={item.id}
-                      name={item.name}
-                      img={item.album.images}
-                      artist={item.artists[0].name}
-                    />
-                  );
-                case "playlists":
-                  return (
-                    <PlaylistCard
-                      key={item.id}
-                      name={item.name}
-                      img={item.images}
-                      owner={item.owner.display_name}
-                    />
-                  );
-                default:
-                  return <></>;
-              }
-            })}
-          </ul>
-        </section>
-      </main>
-      <footer>
-        <button onClick={() => fetchNextResultsSet(false)}>previous</button>
-        <button onClick={() => fetchNextResultsSet(true)}>next</button>
-      </footer>
-    </>
+    <main>
+      <SectionHeading>Search For Music Info</SectionHeading>
+      <SegmentedControl
+        name="searchType"
+        options={[
+          { label: "Album", value: "album", default: true },
+          { label: "Artist", value: "artist" },
+          { label: "Track", value: "track" },
+          { label: "Playlist", value: "playlist" },
+        ]}
+        setValue={(selectedValue) => onTypeChange(selectedValue)}
+      />
+      <SearchForm onSubmit={onSearchClick}>
+        <input
+          type="text"
+          value={searchInput}
+          aria-label="Search for song data"
+          placeholder="Search for something..."
+          onChange={(event) => onInputChange(event.target)}
+        ></input>
+        <StyledButton onClick={onSearchClick}>search</StyledButton>
+      </SearchForm>
+      <section>
+        <h2>{resultsTitle}</h2>
+        <ResultsList>
+          {searchResults.map((item) => {
+            switch (resultsType) {
+              case "artists":
+                return (
+                  <ArtistCard
+                    key={item.id}
+                    name={item.name}
+                    img={item.images}
+                  />
+                );
+              case "albums":
+                return (
+                  <AlbumCard
+                    key={item.id}
+                    name={item.name}
+                    img={item.images}
+                    artist={item.artists[0].name}
+                  />
+                );
+              case "tracks":
+                return (
+                  <TrackCard
+                    key={item.id}
+                    name={item.name}
+                    img={item.album.images}
+                    artist={item.artists[0].name}
+                  />
+                );
+              case "playlists":
+                return (
+                  <PlaylistCard
+                    key={item.id}
+                    name={item.name}
+                    img={item.images}
+                    owner={item.owner.display_name}
+                  />
+                );
+              default:
+                return <></>;
+            }
+          })}
+        </ResultsList>
+      </section>
+      <SearchFooter>
+        <Observer>
+          {() => (
+            <StyledButton
+              onClick={() => fetchNextResultsSet(false)}
+              disabled={!offsetResultsQuery.isPrevAvailable}
+              swapImgOrientation
+            >
+              <img
+                src={nextArrow}
+                height={30}
+                width={30}
+                alt="previous search set"
+              />
+            </StyledButton>
+          )}
+        </Observer>
+        <Observer>
+          {() => (
+            <StyledButton
+              onClick={() => fetchNextResultsSet(true)}
+              disabled={!offsetResultsQuery.isNextAvailable}
+            >
+              <img
+                src={nextArrow}
+                height={30}
+                width={30}
+                alt="next search set"
+              />
+            </StyledButton>
+          )}
+        </Observer>
+      </SearchFooter>
+    </main>
   ) : (
     <Redirect noThrow to="/" />
   );

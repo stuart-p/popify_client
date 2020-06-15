@@ -1,4 +1,4 @@
-import stockImg from "../images/logoPink.png";
+import stockImg from "../images/popifyLogo.png";
 
 export const findResultsTitle = (results) => {
   if (typeof results !== "object") return "";
@@ -40,20 +40,24 @@ export const determineNextAndPreviousSetSearchParams = (results) => {
   const keys = Object.keys(results);
   if (keys.length === 0) return nextSearchParams;
 
-  if (results[keys[0]].prev) {
+  if (results[keys[0]].previous) {
     if (
-      results[keys[0]].prev.match(queryRegex) &&
-      results[keys[0]].prev.match(typeQuery) &&
-      results[keys[0]].prev.match(offsetQuery) &&
-      results[keys[0]].prev.match(limitQuery)
+      results[keys[0]].previous.match(queryRegex) &&
+      results[keys[0]].previous.match(typeQuery) &&
+      results[keys[0]].previous.match(offsetQuery) &&
+      results[keys[0]].previous.match(limitQuery)
     ) {
-      nextSearchParams.prev.query = results[keys[0]].prev.match(queryRegex)[1];
-      nextSearchParams.prev.type = results[keys[0]].prev.match(typeQuery)[1];
+      nextSearchParams.prev.query = results[keys[0]].previous.match(
+        queryRegex
+      )[1];
+      nextSearchParams.prev.type = results[keys[0]].previous.match(
+        typeQuery
+      )[1];
       nextSearchParams.prev.offset = parseInt(
-        results[keys[0]].prev.match(offsetQuery)[1]
+        results[keys[0]].previous.match(offsetQuery)[1]
       );
       nextSearchParams.prev.limit = parseInt(
-        results[keys[0]].prev.match(limitQuery)[1]
+        results[keys[0]].previous.match(limitQuery)[1]
       );
       nextSearchParams.isPrevAvailable = true;
     }
