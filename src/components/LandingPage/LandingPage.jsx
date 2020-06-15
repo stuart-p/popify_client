@@ -1,15 +1,11 @@
-import { useLocation, Link } from "@reach/router";
+import { useLocation } from "@reach/router";
 import React from "react";
-import { Observer } from "mobx-react";
-import { auth } from "../../stores/auth.js";
 import { handleLoginStatus } from "../../utils/loginHandler";
 import {
   SectionHeading,
   SectionPara,
   ParaHeading,
 } from "../../styles/text.style.js";
-
-import { SegmentedControl } from "segmented-control";
 
 const LandingPage = () => {
   const location = useLocation();

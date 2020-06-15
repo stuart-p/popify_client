@@ -27,12 +27,13 @@ export const SearchFooter = styled.footer`
   background-color: ${theme.f};
   position: fixed;
   bottom: 0;
-  width: 50%;
-  padding: 0.5rem;
+  width: 100%;
+  padding: 0.4rem;
 
   button {
     z-index: 5;
     margin: 0 1rem;
+    display: flex;
   }
 
   &:after {

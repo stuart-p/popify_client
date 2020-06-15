@@ -17,12 +17,12 @@ import { SectionHeading } from "../../styles/text.style";
 import SegmentedControl from "segmented-control/dist/SegmentedControl";
 import { StyledButton, SearchForm, ResultsList } from "../../styles/ui.style";
 import { SearchFooter } from "../../styles/containers.style";
-import { Observer } from "mobx-react";
+import { observer } from "mobx-react";
 import nextArrow from "../../images/next.png";
 
 const s = new Spotify();
 
-const SearchPage = () => {
+const SearchPage = observer(() => {
   const location = useLocation();
   const [searchResults, setSearchResults] = useState([]);
   const [searchInput, setSearchInput] = useState("");
@@ -158,42 +158,29 @@ const SearchPage = () => {
         </ResultsList>
       </section>
       <SearchFooter>
-        <Observer>
-          {() => (
-            <StyledButton
-              onClick={() => fetchNextResultsSet(false)}
-              disabled={!offsetResultsQuery.isPrevAvailable}
-              swapImgOrientation
-            >
-              <img
-                src={nextArrow}
-                height={30}
-                width={30}
-                alt="previous search set"
-              />
-            </StyledButton>
-          )}
-        </Observer>
-        <Observer>
-          {() => (
-            <StyledButton
-              onClick={() => fetchNextResultsSet(true)}
-              disabled={!offsetResultsQuery.isNextAvailable}
-            >
-              <img
-                src={nextArrow}
-                height={30}
-                width={30}
-                alt="next search set"
-              />
-            </StyledButton>
-          )}
-        </Observer>
+        <StyledButton
+          onClick={() => fetchNextResultsSet(false)}
+          disabled={!offsetResultsQuery.isPrevAvailable}
+          swapImgOrientation
+        >
+          <img
+            src={nextArrow}
+            height={30}
+            width={30}
+            alt="previous search set"
+          />
+        </StyledButton>
+        <StyledButton
+          onClick={() => fetchNextResultsSet(true)}
+          disabled={!offsetResultsQuery.isNextAvailable}
+        >
+          <img src={nextArrow} height={30} width={30} alt="next search set" />
+        </StyledButton>
       </SearchFooter>
     </main>
   ) : (
     <Redirect noThrow to="/" />
   );
-};
+});
 
 export default SearchPage;
