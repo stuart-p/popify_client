@@ -1,68 +1,81 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Popify
 
-## Available Scripts
+Site can be accessed at: [https://popify.netlify.app/](https://popify.netlify.app/)
 
-In the project directory, you can run:
+## A web app for searching Spotify's music database
 
-### `npm start`
+<img src='public/popifyScreenshot.png'>
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+This is the source code for the front-end portion of the Popify portfolio project. This site is a simple demonstration of consumption of API data, and the use of OAauth 2.0 for access control.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+the front end is **React.js**, deployed on the Netlify hosting platform. MobX is used for state management, Styled Components is used for CSS management, and 'lazy loading' has been implemented on displayed images to improve loading performance.
 
-### `npm test`
+The back end is a **NodeJS** server. The source code for the back-end cand be viewed at [https://github.com/stuart-p/popify_server](https://github.com/stuart-p/popify_server).
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Usage
 
-### `npm run build`
+The site is designed by be accessed by a web browser [here](https://popify.netlify.app).
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Pages and Functions
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+The user first hits the landing page, which contains a bold header and a basic explanation of the app.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The header contains nav links to home (current page) and search (search is disabled if not logged in).
 
-### `npm run eject`
+The header also has a login/logout button at the top. Pressing this will redirect the user to an OAuth login prompt from Spotify, via the Popify back-end server. Once logged in the user can freely browse to the search page.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+The search page contains the main functionality of the application. A search bar at the top allows the user to type in search queries, and a selection bar allows the user to search in a particular category. On pressing submit or enter, the requested data is retrieved and displayed to the user in a grid format below. A footer contains 'forward' and 'backwards' buttons to allow the user to browse multiple pages of results.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Local deployment
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+To run the app locally, clone down the client and server code, navigate to the folders in turn and run `npm install` to install all the dependencies.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Both client and server will require environmental variables to be set. Create a file called `.env` in the root of each project, and add the following variables:
 
-## Learn More
+1. CLIENT
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- `REACT_APP_AUTH_SERVER=http://localhost:PORTNUM/auth/login` (replace PORTNUM with your desired server port settings, default 8080 )
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+2. SERVER
 
-### Code Splitting
+- `client_id=SPOTIFY CLIENT ID` (add your Spotify developer Client ID here)
+- `client_secret=SPOTIFY SECRET`(add your Spotify developer Client Secret here)
+- `redirect_uri=http://localhost:PORTNUM/auth/callback` (Replace PORTNUM with server port settings, default 8080)
+- `frontend_uri=http://localhost:PORTNUM` (Replace PORTNUM with client port settings, default 3000)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+Run `npm start` in both client and server root directories to start a local instance of the application. Then navigate to `http://localhost:3000` (or whatever port number you are using client-side) to access the site.
 
-### Analyzing the Bundle Size
+### Testing
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+Jest has been used as the test system for this build. Tests can be run using `npm test` command
 
-### Making a Progressive Web App
+## Prerequisites
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+This project requires `NodeJS`, minimum version V12. It has the following dependencies (these will automatically be install if using `npm install` command)
 
-### Advanced Configuration
+```
+production dependencies:
+  @reach/router: ^1.3.3
+  @testing-library/jest-dom: ^4.2.4
+  @testing-library/react: ^9.5.0
+  @testing-library/user-event: ^7.2.1
+  dotenv: ^8.2.0
+  mobx: ^5.15.4
+  mobx-react: ^6.2.2
+  react: ^16.13.1
+  react-dom: ^16.13.1
+  react-lazy-load-image-component: ^1.5.0-beta.0
+  react-scripts: 3.4.1
+  segmented-control:"^0.1.12
+  spotify-web-api-js:"^1.4.0
+  styled-components: ^5.1.
+}
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+## Built with
 
-### Deployment
+This project was built with VS Code, using Javascript and the React.js front end library. The initial project template was generated using `npx create-react-app`
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+## Author
 
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+This project was built by **Stuart Palmer** as a demonstration of OAuth functionality in June 2020.
